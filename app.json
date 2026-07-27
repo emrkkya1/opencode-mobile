@@ -21,7 +21,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0a0a0a"
       },
-      "package": "ai.opencode.mobile"
+      "package": "ai.opencode.mobile",
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
