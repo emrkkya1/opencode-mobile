@@ -1,0 +1,140 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript type check
+        run: npx tsc --noEmit
+
+  build:
+    name: Build APK
+    needs: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate native project
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('android/**/*.gradle*', 'android/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Release APK
+        env:
+          GRADLE_OPTS: "-Xmx4096m -XX:MaxMetaspaceSize=1024m -Dorg.gradle.daemon=false"
+        run: cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencode-mobile-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 7
+
+  release:
+    name: Create Release
+    needs: [typecheck, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from app.json
+        id: get-version
+        run: |
+          VERSION=$(jq -r '.expo.version' app.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Check for duplicate release
+        id: check-duplicate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${{ steps.get-version.outputs.version }}
+          TAG="v$VERSION"
+          
+          echo "Checking if release $TAG already exists..."
+          
+          if gh release view "$TAG" --repo ${{ github.repository }} >/dev/null 2>&1; then
+            echo "Release $TAG already exists, skipping"
+            echo "should-build=false" >> $GITHUB_OUTPUT
+          else
+            echo "Release $TAG does not exist, proceeding"
+            echo "should-build=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download APK artifact
+        if: steps.check-duplicate.outputs.should-build == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: opencode-mobile-apk
+          path: ./
+
+      - name: Create GitHub Release
+        if: steps.check-duplicate.outputs.should-build == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${{ steps.get-version.outputs.version }}
+          TAG="v$VERSION"
+          
+          echo "Creating release $TAG..."
+          
+          gh release create "$TAG" \
+            --repo ${{ github.repository }} \
+            --title "Release $TAG" \
+            --notes "OpenCode Mobile v$VERSION" \
+            ./app-release.apk#opencode-mobile-$TAG.apk
+          
+          echo "Release $TAG created successfully!"

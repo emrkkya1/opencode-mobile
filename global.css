@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg-base: #0a0a0a;
+  --color-bg-weak: #1a1a1a;
+  --color-surface-base: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.06);
+  --color-surface-active: rgba(255, 255, 255, 0.09);
+  --color-surface-raised: #1a1a1a;
+  --color-text-strong: #eeeeee;
+  --color-text-base: #b7b1b1;
+  --color-text-weak: #808080;
+  --color-border-base: rgba(255, 255, 255, 0.12);
+  --color-border-weak: rgba(255, 255, 255, 0.07);
+  --color-border-focus: #fab283;
+  --color-interactive-primary: #fab283;
+  --color-interactive-hover: #f5a742;
+  --color-success: #7fd88f;
+  --color-warning: #f5a742;
+  --color-error: #e06c75;
+  --color-info: #56b6c2;
+}
+
+.light {
+  --color-bg-base: #ffffff;
+  --color-bg-weak: #f8f8f8;
+  --color-surface-base: rgba(0, 0, 0, 0.03);
+  --color-surface-hover: rgba(0, 0, 0, 0.06);
+  --color-surface-active: rgba(0, 0, 0, 0.09);
+  --color-surface-raised: #ffffff;
+  --color-text-strong: #1a1a1a;
+  --color-text-base: #4b4646;
+  --color-text-weak: #8a8a8a;
+  --color-border-base: rgba(0, 0, 0, 0.12);
+  --color-border-weak: rgba(0, 0, 0, 0.07);
+  --color-border-focus: #3b7dd8;
+  --color-interactive-primary: #3b7dd8;
+  --color-interactive-hover: #2d6bc4;
+  --color-success: #3d9a57;
+  --color-warning: #d68c27;
+  --color-error: #d1383d;
+  --color-info: #318795;
+}

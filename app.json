@@ -1,23 +1,27 @@
 {
   "expo": {
-    "name": "opencode-mobile",
+    "name": "OpenCode Mobile",
     "slug": "opencode-mobile",
+    "scheme": "opencode-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "opencodemobile",
     "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0a0a"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ai.opencode.mobile"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#0a0a0a"
       },
-      "predictiveBackGestureEnabled": false
+      "package": "ai.opencode.mobile"
     },
     "web": {
       "bundler": "metro",
@@ -26,14 +30,9 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
+      "expo-secure-store",
+      "expo-status-bar",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
