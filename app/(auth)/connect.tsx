@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -7,24 +7,24 @@ import {
   Platform,
   ScrollView,
   Pressable,
-} from "react-native"
-import { useRouter } from "expo-router"
-import { Link2, Eye, EyeOff, Server } from "lucide-react-native"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Spinner } from "@/components/ui/spinner"
-import { useConnection } from "@/hooks/use-connection"
-import { useSDKContext } from "@/context/sdk"
-import { validateServerUrl, formatRelativeTime } from "@/lib/utils"
-import { getRecentServers, type RecentServer } from "@/lib/storage"
+} from 'react-native'
+import { useRouter } from 'expo-router'
+import { Link2, Eye, EyeOff, Server } from 'lucide-react-native'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Spinner } from '@/components/ui/spinner'
+import { useConnection } from '@/hooks/use-connection'
+import { useSDKContext } from '@/context/sdk'
+import { validateServerUrl, formatRelativeTime } from '@/lib/utils'
+import { getRecentServers, type RecentServer } from '@/lib/storage'
 
 export default function ConnectScreen() {
   const router = useRouter()
   const { connect, status } = useConnection()
   const { isInitialized, serverUrl } = useSDKContext()
 
-  const [url, setUrl] = useState("")
-  const [password, setPassword] = useState("")
+  const [url, setUrl] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [urlError, setUrlError] = useState<string>()
   const [connectError, setConnectError] = useState<string>()
@@ -36,7 +36,7 @@ export default function ConnectScreen() {
 
   useEffect(() => {
     if (isInitialized && serverUrl) {
-      router.replace("/(app)")
+      router.replace('/(app)')
     }
   }, [isInitialized, serverUrl])
 
@@ -52,9 +52,9 @@ export default function ConnectScreen() {
 
     const success = await connect(trimmedUrl, password || undefined)
     if (success) {
-      router.replace("/(app)")
+      router.replace('/(app)')
     } else {
-      setConnectError("Cannot connect to server. Check the URL and try again.")
+      setConnectError('Cannot connect to server. Check the URL and try again.')
     }
   }
 
@@ -68,7 +68,7 @@ export default function ConnectScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1 bg-bg-base"
     >
       <ScrollView
@@ -79,9 +79,7 @@ export default function ConnectScreen() {
           <View className="w-16 h-16 rounded-2xl bg-interactive-primary/20 items-center justify-center mb-4">
             <Link2 size={32} color="var(--color-interactive-primary)" />
           </View>
-          <Text className="text-2xl font-bold text-text-strong">
-            Connect to OpenCode
-          </Text>
+          <Text className="text-2xl font-bold text-text-strong">Connect to OpenCode</Text>
           <Text className="text-sm text-text-weak mt-2 text-center">
             Enter your OpenCode server URL to get started
           </Text>
@@ -105,9 +103,7 @@ export default function ConnectScreen() {
           />
 
           <View className="gap-1.5">
-            <Text className="text-sm font-medium text-text-strong">
-              Password (optional)
-            </Text>
+            <Text className="text-sm font-medium text-text-strong">Password (optional)</Text>
             <View className="flex-row items-center border border-border-base rounded-md bg-surface-base">
               <TextInput
                 className="flex-1 h-10 px-3 text-base text-text-strong"
@@ -119,10 +115,7 @@ export default function ConnectScreen() {
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              <Pressable
-                onPress={() => setShowPassword(!showPassword)}
-                className="px-3"
-              >
+              <Pressable onPress={() => setShowPassword(!showPassword)} className="px-3">
                 {showPassword ? (
                   <EyeOff size={18} color="var(--color-text-weak)" />
                 ) : (
@@ -132,13 +125,11 @@ export default function ConnectScreen() {
             </View>
           </View>
 
-          {connectError && (
-            <Text className="text-sm text-error">{connectError}</Text>
-          )}
+          {connectError && <Text className="text-sm text-error">{connectError}</Text>}
 
           <Button
             onPress={handleConnect}
-            loading={status === "connecting"}
+            loading={status === 'connecting'}
             disabled={!url.trim()}
             className="mt-2"
           >
@@ -148,9 +139,7 @@ export default function ConnectScreen() {
 
         {recentServers.length > 0 && (
           <View className="mt-8">
-            <Text className="text-sm font-medium text-text-weak mb-3">
-              Recent connections
-            </Text>
+            <Text className="text-sm font-medium text-text-weak mb-3">Recent connections</Text>
             <View className="gap-2">
               {recentServers.map((server) => (
                 <Pressable

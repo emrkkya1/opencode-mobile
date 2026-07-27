@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { api } from "@/lib/api"
-import { queryKeys } from "@/lib/query-keys"
-import type { Session } from "@/types"
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@/lib/api'
+import { queryKeys } from '@/lib/query-keys'
+import type { Session } from '@/types'
 
 type SessionsResponse = {
   data: Session[]
@@ -13,11 +13,9 @@ export function useSessions(filters?: { search?: string; limit?: number }) {
     queryKey: queryKeys.sessions(filters),
     queryFn: async () => {
       const params = new URLSearchParams()
-      params.set("limit", String(filters?.limit ?? 50))
-      if (filters?.search) params.set("search", filters.search)
-      const response = await api.get<SessionsResponse>(
-        `/session?${params.toString()}`
-      )
+      params.set('limit', String(filters?.limit ?? 50))
+      if (filters?.search) params.set('search', filters.search)
+      const response = await api.get<SessionsResponse>(`/session?${params.toString()}`)
       return response.data
     },
     refetchInterval: 30_000,
@@ -44,7 +42,7 @@ export function useCreateSession() {
       agent?: string
       model?: { id: string; providerID: string }
     }) => {
-      const response = await api.post<{ data: Session }>("/session", input ?? {})
+      const response = await api.post<{ data: Session }>('/session', input ?? {})
       return response.data
     },
     onSuccess: () => {
@@ -79,10 +77,7 @@ export function useUpdateSession() {
       model?: { id: string; providerID: string }
       agent?: string
     }) => {
-      const response = await api.patch<{ data: Session }>(
-        `/session/${id}`,
-        body
-      )
+      const response = await api.patch<{ data: Session }>(`/session/${id}`, body)
       return response.data
     },
     onSuccess: (data) => {

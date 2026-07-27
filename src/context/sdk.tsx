@@ -1,13 +1,7 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react"
-import { configureAPI, resetAPI, getAPIConfig } from "@/lib/api"
-import { loadCredentials } from "@/lib/storage"
-import { useConnectionStore } from "@/stores/connection"
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { configureAPI, resetAPI, getAPIConfig } from '@/lib/api'
+import { loadCredentials } from '@/lib/storage'
+import { useConnectionStore } from '@/stores/connection'
 
 type SDKContextType = {
   isInitialized: boolean
@@ -31,17 +25,13 @@ export function SDKProvider({ children }: { children: ReactNode }) {
       if (creds) {
         configureAPI({ url: creds.url, password: creds.password })
         setServerUrl(creds.url)
-        setStatus("connected")
+        setStatus('connected')
       }
       setIsInitialized(true)
     })()
   }, [])
 
-  return (
-    <SDKContext.Provider value={{ isInitialized, serverUrl }}>
-      {children}
-    </SDKContext.Provider>
-  )
+  return <SDKContext.Provider value={{ isInitialized, serverUrl }}>{children}</SDKContext.Provider>
 }
 
 export function useSDKContext() {
@@ -53,7 +43,7 @@ export function useConfigureServer() {
 
   return async (url: string, password?: string) => {
     configureAPI({ url, password })
-    setStatus("connected")
+    setStatus('connected')
   }
 }
 
@@ -63,7 +53,7 @@ export function useDisconnect() {
   return async () => {
     resetAPI()
     reset()
-    const { deleteCredentials } = await import("@/lib/storage")
+    const { deleteCredentials } = await import('@/lib/storage')
     await deleteCredentials()
   }
 }

@@ -1,4 +1,4 @@
-import { create } from "zustand"
+import { create } from 'zustand'
 
 type UIState = {
   sessionSearchQuery: string
@@ -10,7 +10,7 @@ type UIState = {
 }
 
 export const useUIStore = create<UIState>((set) => ({
-  sessionSearchQuery: "",
+  sessionSearchQuery: '',
   isModelPickerOpen: false,
   isAgentPickerOpen: false,
   setSessionSearchQuery: (query) => set({ sessionSearchQuery: query }),

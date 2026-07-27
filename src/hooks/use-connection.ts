@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef } from "react"
-import { api } from "@/lib/api"
-import { useConnectionStore } from "@/stores/connection"
+import { useCallback, useEffect, useRef } from 'react'
+import { api } from '@/lib/api'
+import { useConnectionStore } from '@/stores/connection'
 
 const HEALTH_CHECK_INTERVAL = 30_000
 
@@ -13,9 +13,9 @@ export function useConnection() {
 
   const checkHealth = useCallback(async () => {
     try {
-      const result = await api.get<{ healthy: boolean }>("/global/health")
+      const result = await api.get<{ healthy: boolean }>('/global/health')
       setHealth(result.healthy)
-      setStatus("connected")
+      setStatus('connected')
       setError(undefined)
       return true
     } catch {
@@ -26,20 +26,20 @@ export function useConnection() {
 
   const connect = useCallback(
     async (url: string, password?: string) => {
-      setStatus("connecting")
+      setStatus('connecting')
       try {
-        const { configureAPI } = await import("@/lib/api")
+        const { configureAPI } = await import('@/lib/api')
         configureAPI({ url, password })
-        await api.get<{ healthy: boolean }>("/global/health")
-        setStatus("connected")
+        await api.get<{ healthy: boolean }>('/global/health')
+        setStatus('connected')
         setError(undefined)
 
-        const { saveCredentials, addRecentServer } = await import("@/lib/storage")
+        const { saveCredentials, addRecentServer } = await import('@/lib/storage')
         await saveCredentials({ url, password, savedAt: Date.now() })
         await addRecentServer(url)
         return true
       } catch (err) {
-        setStatus("error")
+        setStatus('error')
         if (err instanceof Error) {
           setError(err.message)
         }
@@ -50,7 +50,7 @@ export function useConnection() {
   )
 
   useEffect(() => {
-    if (status === "connected") {
+    if (status === 'connected') {
       intervalRef.current = setInterval(checkHealth, HEALTH_CHECK_INTERVAL)
     }
     return () => {
@@ -60,7 +60,7 @@ export function useConnection() {
 
   return {
     status,
-    isConnected: status === "connected",
+    isConnected: status === 'connected',
     checkHealth,
     connect,
   }

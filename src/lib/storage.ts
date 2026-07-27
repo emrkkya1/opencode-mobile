@@ -1,13 +1,13 @@
-import * as SecureStore from "expo-secure-store"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Platform } from "react-native"
+import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Platform } from 'react-native'
 
 const SECURE_KEYS = {
-  CREDENTIALS: "opencode_credentials",
+  CREDENTIALS: 'opencode_credentials',
 } as const
 
 const STORAGE_KEYS = {
-  RECENT_SERVERS: "opencode_recent_servers",
+  RECENT_SERVERS: 'opencode_recent_servers',
 } as const
 
 type StoredCredentials = {
@@ -52,9 +52,6 @@ export async function getRecentServers(): Promise<RecentServer[]> {
 export async function addRecentServer(url: string): Promise<void> {
   const servers = await getRecentServers()
   const filtered = servers.filter((s) => s.url !== url)
-  const updated = [
-    { url, lastConnected: Date.now() },
-    ...filtered,
-  ].slice(0, 5)
+  const updated = [{ url, lastConnected: Date.now() }, ...filtered].slice(0, 5)
   await AsyncStorage.setItem(STORAGE_KEYS.RECENT_SERVERS, JSON.stringify(updated))
 }

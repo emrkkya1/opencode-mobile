@@ -1,8 +1,8 @@
-import { create } from "zustand"
-import { persist, createJSONStorage } from "zustand/middleware"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-type ThemeMode = "light" | "dark" | "system"
+type ThemeMode = 'light' | 'dark' | 'system'
 
 type SettingsState = {
   theme: ThemeMode
@@ -12,11 +12,11 @@ type SettingsState = {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: "system",
+      theme: 'system',
       setTheme: (theme) => set({ theme }),
     }),
     {
-      name: "opencode-settings",
+      name: 'opencode-settings',
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

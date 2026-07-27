@@ -1,9 +1,9 @@
-import { Stack } from "expo-router"
-import { QueryProvider } from "@/context/query"
-import { ThemeProvider, useTheme } from "@/context/theme"
-import { SDKProvider } from "@/context/sdk"
-import { ErrorBoundary } from "@/components/ui/error-boundary"
-import "@/../global.css"
+import { Stack } from 'expo-router'
+import { QueryProvider } from '@/context/query'
+import { ThemeProvider, useTheme } from '@/context/theme'
+import { SDKProvider } from '@/context/sdk'
+import { ErrorBoundary } from '@/components/ui/error-boundary'
+import '@/../global.css'
 
 function RootStack() {
   return (

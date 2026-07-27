@@ -15,7 +15,7 @@ export type Session = {
     updated: number
   }
   sync: {
-    state: "idle" | "running" | "error"
+    state: 'idle' | 'running' | 'error'
     error?: string
   }
   cost?: number
@@ -34,7 +34,7 @@ export type Session = {
 export type UserMessage = {
   id: string
   sessionID: string
-  role: "user"
+  role: 'user'
   time: { created: number }
   agent: string
   model: { providerID: string; modelID: string }
@@ -44,7 +44,7 @@ export type UserMessage = {
 export type AssistantMessage = {
   id: string
   sessionID: string
-  role: "assistant"
+  role: 'assistant'
   time: { created: number; completed?: number }
   modelID: string
   providerID: string
@@ -65,7 +65,7 @@ export type TextPart = {
   id: string
   sessionID: string
   messageID: string
-  type: "text"
+  type: 'text'
   text: string
   time?: { start: number; end?: number }
 }
@@ -74,12 +74,12 @@ export type ToolPart = {
   id: string
   sessionID: string
   messageID: string
-  type: "tool-invocation"
+  type: 'tool-invocation'
   toolInvocation: {
     toolCallID: string
     toolName: string
     args: Record<string, unknown>
-    state: "partial-call" | "call" | "result"
+    state: 'partial-call' | 'call' | 'result'
     result?: unknown
   }
   time: { start: number; end?: number }
@@ -89,7 +89,7 @@ export type ReasoningPart = {
   id: string
   sessionID: string
   messageID: string
-  type: "reasoning"
+  type: 'reasoning'
   text: string
   time: { start: number; end?: number }
 }
@@ -120,14 +120,20 @@ export type Agent = {
 }
 
 export type SSEEvent =
-  | { type: "session.created"; properties: { info: Session } }
-  | { type: "session.updated"; properties: { info: Session } }
-  | { type: "session.deleted"; properties: { id: string } }
-  | { type: "message.updated"; properties: { info: Message } }
-  | { type: "message.removed"; properties: { sessionID: string; messageID: string } }
-  | { type: "message.part.updated"; properties: { part: MessagePart } }
-  | { type: "message.part.removed"; properties: { sessionID: string; messageID: string; partID: string } }
-  | { type: "permission.v2.asked"; properties: PermissionV2Request }
-  | { type: "permission.v2.replied"; properties: { sessionID: string; requestID: string; reply: string } }
-  | { type: "session.status"; properties: { sessionID: string; status: string } }
-  | { type: "session.idle"; properties: { sessionID: string } }
+  | { type: 'session.created'; properties: { info: Session } }
+  | { type: 'session.updated'; properties: { info: Session } }
+  | { type: 'session.deleted'; properties: { id: string } }
+  | { type: 'message.updated'; properties: { info: Message } }
+  | { type: 'message.removed'; properties: { sessionID: string; messageID: string } }
+  | { type: 'message.part.updated'; properties: { part: MessagePart } }
+  | {
+      type: 'message.part.removed'
+      properties: { sessionID: string; messageID: string; partID: string }
+    }
+  | { type: 'permission.v2.asked'; properties: PermissionV2Request }
+  | {
+      type: 'permission.v2.replied'
+      properties: { sessionID: string; requestID: string; reply: string }
+    }
+  | { type: 'session.status'; properties: { sessionID: string; status: string } }
+  | { type: 'session.idle'; properties: { sessionID: string } }

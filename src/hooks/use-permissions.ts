@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { api } from "@/lib/api"
-import { usePermissionStore } from "@/stores/permission"
-import { queryKeys } from "@/lib/query-keys"
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@/lib/api'
+import { usePermissionStore } from '@/stores/permission'
+import { queryKeys } from '@/lib/query-keys'
 
 export function usePermissions() {
   const { current, dequeue, remove } = usePermissionStore()
@@ -15,12 +15,9 @@ export function usePermissions() {
     }: {
       sessionID: string
       requestID: string
-      reply: "once" | "always" | "reject"
+      reply: 'once' | 'always' | 'reject'
     }) => {
-      await api.post(
-        `/api/session/${sessionID}/permission/${requestID}/reply`,
-        { reply }
-      )
+      await api.post(`/api/session/${sessionID}/permission/${requestID}/reply`, { reply })
     },
     onSuccess: (_, variables) => {
       remove(variables.requestID)

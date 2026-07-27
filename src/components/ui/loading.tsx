@@ -1,5 +1,5 @@
-import { View } from "react-native"
-import { Spinner } from "./spinner"
+import { View } from 'react-native'
+import { Spinner } from './spinner'
 
 export function LoadingScreen() {
   return (

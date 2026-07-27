@@ -1,21 +1,15 @@
-import { useState } from "react"
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native"
-import { useRouter, Stack } from "expo-router"
-import { ArrowLeft } from "lucide-react-native"
-import { Pressable } from "react-native"
-import { Button } from "@/components/ui/button"
-import { useCreateSession } from "@/hooks/use-sessions"
-import { useSendMessage } from "@/hooks/use-messages"
+import { useState } from 'react'
+import { View, Text, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
+import { useRouter, Stack } from 'expo-router'
+import { ArrowLeft } from 'lucide-react-native'
+import { Pressable } from 'react-native'
+import { Button } from '@/components/ui/button'
+import { useCreateSession } from '@/hooks/use-sessions'
+import { useSendMessage } from '@/hooks/use-messages'
 
 export default function NewSessionScreen() {
   const router = useRouter()
-  const [prompt, setPrompt] = useState("")
+  const [prompt, setPrompt] = useState('')
   const createSession = useCreateSession()
 
   const handleSubmit = async () => {
@@ -25,12 +19,12 @@ export default function NewSessionScreen() {
       const session = await createSession.mutateAsync({})
       router.replace(`/session/${session.id}`)
 
-      const { api } = await import("@/lib/api")
+      const { api } = await import('@/lib/api')
       await api.post(`/session/${session.id}/message`, {
-        parts: [{ type: "text", text: prompt.trim() }],
+        parts: [{ type: 'text', text: prompt.trim() }],
       })
     } catch (error) {
-      console.error("Failed to create session:", error)
+      console.error('Failed to create session:', error)
     }
   }
 
@@ -38,7 +32,7 @@ export default function NewSessionScreen() {
     <>
       <Stack.Screen
         options={{
-          title: "New Session",
+          title: 'New Session',
           headerLeft: () => (
             <Pressable onPress={() => router.back()} className="mr-2">
               <ArrowLeft size={20} color="var(--color-text-strong)" />
@@ -47,7 +41,7 @@ export default function NewSessionScreen() {
         }}
       />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1 bg-bg-base"
       >
         <View className="flex-1 px-4 py-6">

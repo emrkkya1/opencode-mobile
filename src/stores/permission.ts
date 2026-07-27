@@ -1,5 +1,5 @@
-import { create } from "zustand"
-import type { PermissionV2Request } from "@/types"
+import { create } from 'zustand'
+import type { PermissionV2Request } from '@/types'
 
 type PermissionState = {
   queue: PermissionV2Request[]
@@ -30,8 +30,7 @@ export const usePermissionStore = create<PermissionState>((set, get) => ({
   remove: (id) =>
     set((state) => {
       const queue = state.queue.filter((p) => p.id !== id)
-      const current =
-        state.current?.id === id ? queue[0] ?? null : state.current
+      const current = state.current?.id === id ? (queue[0] ?? null) : state.current
       return { queue, current }
     }),
   clear: () => set({ queue: [], current: null }),

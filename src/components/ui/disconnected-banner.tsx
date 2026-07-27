@@ -1,5 +1,5 @@
-import { View, Text, Pressable } from "react-native"
-import { AlertTriangle } from "lucide-react-native"
+import { View, Text, Pressable } from 'react-native'
+import { AlertTriangle } from 'lucide-react-native'
 
 interface DisconnectedBannerProps {
   onRetry?: () => void
