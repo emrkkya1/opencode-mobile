@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { useColorScheme as useRNColorScheme } from 'react-native'
+import { useColorScheme } from 'nativewind'
 import { useSettingsStore } from '@/stores/settings'
 
 type ThemeContextType = {
@@ -15,6 +16,7 @@ const ThemeContext = createContext<ThemeContextType>({
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const theme = useSettingsStore((s) => s.theme)
   const systemColorScheme = useRNColorScheme()
+  const { setColorScheme } = useColorScheme()
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark')
   const [colorSchemeClass, setColorSchemeClass] = useState('')
 
@@ -22,7 +24,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const resolved = theme === 'system' ? (systemColorScheme === 'light' ? 'light' : 'dark') : theme
     setResolvedTheme(resolved)
     setColorSchemeClass(resolved === 'light' ? 'light' : '')
-  }, [theme, systemColorScheme])
+    setColorScheme(resolved)
+  }, [theme, systemColorScheme, setColorScheme])
 
   return (
     <ThemeContext.Provider value={{ resolvedTheme, colorSchemeClass }}>
